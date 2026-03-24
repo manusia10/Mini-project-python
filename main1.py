@@ -7,7 +7,7 @@ LOG_FILE = "done_log.txt"
 
 # ─── Color Palette ───────────────────────────────────────────────
 BG        = "#DEDEE0"
-PANEL     = "#C86C6C"
+PANEL     = "#6A00FF"
 CARD      = "#63666A"
 ACCENT    = "#30D303"
 ACCENT2   = "#F5A623"

@@ -1,3 +1,4 @@
+#LOGPAGE 
 
 import tkinter as tk
 import os
@@ -20,68 +21,33 @@ class main_app(tk.Tk):
   def __init__(self):
     super().__init__()
     self.withdraw()
-    self.title("TO DO LIST")
+    self.title("Logs Page")
     self.geometry("600x700")
     self.iconbitmap("img/logo.ico")
     self.resizable(False, False)
     self.configure(bg=BG)
     self.tasks: list[dict] = []
-    self._build_ui()
-
     #button
     self.btn = tk.Frame(self, bg=BG)
     self.btn.pack(fill="x", pady=10, padx=8,side="bottom") 
-    self.viewlogBTN()  
+    self._build_ui()
+    self.gobackBTN() #สำหรับย้อนกลับไปหน้า Main
     self.deiconify()
 
+
   def _build_ui(self):
-    # Header
-    header = tk.Frame(self, bg=BG, pady=20)
-    header.pack(fill="x")
-    tk.Label(header, text="TO DO LIST", font=FONT_H, bg=BG).pack()
-    tk.Label(header, text="Enter the tasks to be done.", font=FONT_S, bg=BG).pack()
-
-    # Input
-    input_frame = tk.Frame(self, bg=PANEL,padx=20, pady=10)
-    input_frame.pack(fill="x", padx=20)
-
-    self.entry_var = tk.StringVar()
-    entry = tk.Entry(input_frame, textvariable=self.entry_var,
-      font=FONT_M, bg=CARD, fg=TEXT,
-      insertbackground=ACCENT, relief="flat",
-      bd=0, highlightthickness=2,
-      highlightcolor=ACCENT,
-      highlightbackground=CARD)
-
-
-#Start: buttonLog
-  def viewlogBTN(self):
-    tk.Button(self.btn, text="ViewLog", 
-                  bg=CARD, fg=TEXT, relief="flat",
-                  activebackground="#1a4a7a", activeforeground=TEXT,
-                  cursor="hand2", padx=10, pady=4,
-                  command=self.view_log).pack(side="right")
-                  #command send to def view_log
-#End: buttonLog
-
-
-  #เรียกหน้า Log
-  def view_log(self):
+    window = tk.Frame(self, bg=BG, pady=20)
+    window.pack(fill="both", expand=True, side="top")
     
-    window = tk.Toplevel(self)
-    window.title("Log PAGE")
+    title_label = tk.Label(window, text="FOR SUCCESS", font=FONT_H, bg=BG)
+    title_label.pack()
+    title_label = tk.Label(window, text="Congratulations! You completed your To-Do List!\n", font=FONT_S, bg=BG)
+    title_label.pack()
     
-    window.geometry("600x700")
-    window.configure(bg=BG)
-    window.resizable(False, False)
-
-    tk.Label(window, text="FOR SUCCESS", font=FONT_H, bg=BG).pack()
-    tk.Label(window, text="mission complete! to-do list", font=FONT_S, bg=BG).pack()
-    
-    frame = tk.Frame(window, bg=BG, padx=16, pady=0)
+    frame = tk.Frame(window, bg=BG, padx=12, pady=0)
     frame.pack(fill="both", expand=True) #fill= "both"ให้ frame ขยายทั้งเเนวตั้งเเนวนอน"
     
-    txt = tk.Text(frame, font=FONT_S, bg=PANEL, fg="black",relief="flat", bd=0, wrap="word", state="disabled")
+    txt = tk.Text(frame, font=FONT_S, bg=PANEL, fg="black",relief="flat", bd=0, wrap="word", state="disabled", height=20)
     txt.pack(side="left", fill="both", expand=True)
 
     #scrollbar 
@@ -103,6 +69,18 @@ class main_app(tk.Tk):
     print("Welcome to log")
 
 
+    #Start: buttonLog
+  def gobackBTN(self):
+    tk.Button(self.btn, text="Go back to main", 
+                  bg=CARD, fg=TEXT, relief="flat",
+                  activebackground="#1a4a7a", activeforeground=TEXT,
+                  cursor="hand2", padx=10, pady=4,
+                  command=self.goBack).pack(side="right")
+                  #command send to def view_log
+#End: buttonLog
+    
+  def goBack(self):
+    print("Welcome back to main")
 
 
 
