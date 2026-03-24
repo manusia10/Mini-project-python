@@ -20,10 +20,25 @@ FONT_M = ("Arial", 12)
 FONT_S = ("Arial", 10)
 FONT_BTN = ("Arial", 10, "bold")
 
+def log_add(task_text: str):
+        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        with open(LOG_FILE, "a", encoding="utf-8") as f:
+            f.write(f"{now}  ADD          {task_text}\n")
+
+def log_del(task_text: str):
+        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        with open(LOG_FILE, "a", encoding="utf-8") as f:
+            f.write(f"{now}  DELETE       {task_text}\n")
+
 def log_done(task_text: str):
         now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         with open(LOG_FILE, "a", encoding="utf-8") as f:
-            f.write(f"{now}  ✓  {task_text}\n")
+            f.write(f"{now}  DONE         {task_text}\n")
+
+def log_del_done(task_text: str):
+        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        with open(LOG_FILE, "a", encoding="utf-8") as f:
+            f.write(f"{now}  REMOVE DONE  {task_text}\n")
 
 class main_app(tk.Tk):
     def __init__(self):
@@ -140,6 +155,7 @@ class home_page(tk.Frame):
         if not text:
             messagebox.showwarning("Empty Task", "Please enter a task first.")
             return
+        log_add(text)
         self.master_app.tasks.append({"text": text, "done": False})
         self.entry_var.set("")
         self.refresh_list()
@@ -152,15 +168,22 @@ class home_page(tk.Frame):
         self.refresh_list()
 
     def remove_task(self, idx: int):
+        task = self.master_app.tasks[idx]
+        log_del(task["text"])
         self.master_app.tasks.pop(idx)
         self.refresh_list()
 
     def remove_done(self):
         before = len(self.master_app.tasks)
+        done_tasks = [t for t in self.master_app.tasks if t["done"]]
         self.master_app.tasks = [t for t in self.master_app.tasks if not t["done"]]
         removed = before - len(self.master_app.tasks)
+        for t in done_tasks:
+            log_del_done(t["text"])
+
         self.refresh_list()
-        if removed:
+    
+        if removed > 0:
             messagebox.showinfo("Removed", f"Removed {removed} completed task(s).")
         else:
             messagebox.showinfo("Nothing to Remove", "No completed tasks found.")
@@ -267,7 +290,7 @@ class log_viewer(tk.Frame):
             with open(LOG_FILE, encoding="utf-8") as f:
                 content = f.read()
         else:
-            content = "(No log yet. Mark tasks as done to start logging.)"
+            content = "No log yet. Mark tasks as done to start logging."
 
         txt.configure(state="normal")
         txt.insert("1.0", content)
