@@ -20,16 +20,6 @@ FONT_M = ("Arial", 12)
 FONT_S = ("Arial", 10)
 FONT_BTN = ("Arial", 10, "bold")
 
-def log_add(task_text: str):
-        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        with open(LOG_FILE, "a", encoding="utf-8") as f:
-            f.write(f"{now}  ADD          {task_text}\n")
-
-def log_del(task_text: str):
-        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        with open(LOG_FILE, "a", encoding="utf-8") as f:
-            f.write(f"{now}  DELETE       {task_text}\n")
-
 def log_done(task_text: str):
         now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         with open(LOG_FILE, "a", encoding="utf-8") as f:
@@ -155,7 +145,6 @@ class home_page(tk.Frame):
         if not text:
             messagebox.showwarning("Empty Task", "Please enter a task first.")
             return
-        log_add(text)
         self.master_app.tasks.append({"text": text, "done": False})
         self.entry_var.set("")
         self.refresh_list()
@@ -168,8 +157,6 @@ class home_page(tk.Frame):
         self.refresh_list()
 
     def remove_task(self, idx: int):
-        task = self.master_app.tasks[idx]
-        log_del(task["text"])
         self.master_app.tasks.pop(idx)
         self.refresh_list()
 
